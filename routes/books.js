@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var knex = require('../db/knex')
 
-function books() {
+function Books() {
   return knex('books');
 }
 
@@ -28,6 +29,7 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.get('/:id/edit', function(req, res, next) {
+
   Books().where('id', req.params.id).first().then(function (book) {
     res.render('books/edit', {book: book});
   });
@@ -39,7 +41,7 @@ router.post('/:id', function (req, res, next) {
   })
 });
 
-router.post('books/:id/delete', function (req, res, next) {
+router.post('/:id/delete', function (req, res, next) {
   Books().where('id', req.params.id).del().then(function (results) {
     res.redirect('/books');
   })
